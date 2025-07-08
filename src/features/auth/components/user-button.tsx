@@ -1,8 +1,8 @@
 "use client";
 
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
-import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,} from "@/components/ui/dropdown-menu";
-import {Loader, LogOut} from "lucide-react";
+import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
+import {Loader, LogOut, User} from "lucide-react";
 import {useAuthActions} from "@convex-dev/auth/react";
 import {useCurrentUser} from "../api/use-current-user";
 import {DottedSeparator} from "@/components/dotted-separator";
@@ -27,6 +27,10 @@ export const UserButton = () => {
     const handleSignOut = async () => {
         await signOut();
         router.push("/auth");
+    };
+
+    const handleProfileClick = () => {
+        router.push("/profile");
     };
 
     return (
@@ -54,7 +58,11 @@ export const UserButton = () => {
                     </div>
                 </div>
                 <DottedSeparator className="mb-1"/>
-                <DropdownMenuItem onClick={handleSignOut} className="h-10">
+                <DropdownMenuItem onClick={handleProfileClick} className="h-10 cursor-pointer">
+                    <User className="size-4 mr-2"/>
+                    Profile Page
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleSignOut} className="h-10 cursor-pointer">
                     <LogOut className="size-4 mr-2"/>
                     Log out
                 </DropdownMenuItem>
