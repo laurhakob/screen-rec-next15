@@ -11,14 +11,14 @@ export const AuthScreen = () => {
     const [state, setState] = useState<SignInFlow>("signIn");
 
     return (
-        <div className="h-full flex items-center justify-between bg-[#d98cc8]">
+        <div className="h-full flex items-center justify-between bg-[#e8a8d5]">
             <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-20">
                 {/* Left Section - SnapCast Info */}
                 <div className="flex flex-col items-center justify-center gap-4 max-w-md ml-4 md:ml-4">
                     <h1 className="text-4xl font-bold">SnapCast</h1>
                     <div className="flex items-center justify-center gap-1">
                         {Array.from({length: 5}).map((_, index) => (
-                            <Star key={index} className="text-yellow-500"/>
+                            <Star key={index} className="text-yellow-600"/>
                         ))}
                     </div>
                     <p className="text-center text-gray-600">
@@ -49,7 +49,7 @@ export const AuthScreen = () => {
 
                     {/* Welcome Header */}
                     <div className="ml-5">
-                        <h2 className="text-2xl font-bold text-gray-500 max-w-xs mb-8 mx-auto ">
+                        <h2 className="text-2xl font-bold text-gray-600 max-w-xs mb-8 mx-auto ">
                             Welcome to SnapCast!
                         </h2>
 
