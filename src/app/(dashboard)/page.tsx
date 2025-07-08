@@ -2,6 +2,7 @@ import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {Search, Upload, Video} from "lucide-react";
 import {DropdownList} from "@/components/DropdownList";
+import VideoCard from "@/components/VideoCard";
 
 export default function Home() {
     return (
@@ -36,6 +37,10 @@ export default function Home() {
                 </div>
                 <DropdownList/>
             </div>
+            <div className="mt-8">
+                <VideoCard/>
+            </div>
+
         </div>
     );
 }
