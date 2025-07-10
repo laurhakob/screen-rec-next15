@@ -1,22 +1,25 @@
+// lav codey
+
+
+// "use client";
+//
 // import {Button} from "@/components/ui/button";
 // import {Input} from "@/components/ui/input";
-// import {Search, Upload, Video} from "lucide-react";
+// import {Search, Video} from "lucide-react";
 // import {DropdownList} from "@/components/DropdownList";
-// import VideoCard from "@/components/VideoCard";
+// import UploadButton from "@/components/UploadButton";
+// import {useQuery} from "convex/react";
+// import {api} from "../../../convex/_generated/api";
 //
 // export default function Home() {
+//     const videos = useQuery(api.videos.getVideos);
+//
 //     return (
 //         <div className="p-16">
 //             <div className="flex justify-between items-center mb-4">
 //                 <h2 className="text-sm text-gray-400">Public Library</h2>
 //                 <div className="flex gap-2">
-//                     <Button
-//                         size="lg"
-//                         className="bg-white text-black hover:bg-gray-200/50 hover:text-black/50 rounded-full"
-//                     >
-//                         <Upload className="size-5 mr-2"/>
-//                         Upload a video
-//                     </Button>
+//                     <UploadButton/>
 //                     <Button
 //                         size="lg"
 //                         className="bg-red-500 text-white hover:bg-red-500/75 hover:text-white rounded-full"
@@ -37,23 +40,41 @@
 //                 </div>
 //                 <DropdownList/>
 //             </div>
-//             <div className="mt-8">
-//                 <VideoCard/>
+//             <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+//                 {videos ? (
+//                     videos.map((video) => (
+//                         <div key={video._id} className="border rounded-lg p-4">
+//                             <h3 className="text-lg font-semibold">{video.title}</h3>
+//                             <p className="text-sm text-gray-600">{video.description}</p>
+//                             {video.thumbnailUrl && (
+//                                 <img src={video.thumbnailUrl} alt={video.title}
+//                                      className="w-full h-40 object-cover mt-2 rounded"/>
+//                             )}
+//                             <video src={video.videoUrl} controls className="w-full mt-2"/>
+//                         </div>
+//                     ))
+//                 ) : (
+//                     <p>Loading videos...</p>
+//                 )}
 //             </div>
-//
 //         </div>
 //     );
 // }
 
 
+"use client";
+
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {Search, Video} from "lucide-react";
 import {DropdownList} from "@/components/DropdownList";
-import VideoCard from "@/components/VideoCard";
 import UploadButton from "@/components/UploadButton";
+import {useQuery} from "convex/react";
+import {api} from "../../../convex/_generated/api";
 
 export default function Home() {
+    const videos = useQuery(api.videos.getVideos);
+
     return (
         <div className="p-16">
             <div className="flex justify-between items-center mb-4">
@@ -80,8 +101,24 @@ export default function Home() {
                 </div>
                 <DropdownList/>
             </div>
-            <div className="mt-8">
-                <VideoCard/>
+            <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {videos === undefined ? (
+                    <p>Loading videos...</p>
+                ) : videos.length > 0 ? (
+                    videos.map((video) => (
+                        <div key={video._id} className="border rounded-lg p-4">
+                            <h3 className="text-lg font-semibold">{video.title}</h3>
+                            <p className="text-sm text-gray-600">{video.description}</p>
+                            {video.thumbnailUrl && (
+                                <img src={video.thumbnailUrl} alt={video.title}
+                                     className="w-full h-40 object-cover mt-2 rounded"/>
+                            )}
+                            <video src={video.videoUrl} controls className="w-full mt-2"/>
+                        </div>
+                    ))
+                ) : (
+                    <p>No videos found.</p>
+                )}
             </div>
         </div>
     );
