@@ -1,3 +1,5 @@
+// src/components/VideoPlayer.tsx
+
 import Hls from "hls.js";
 import {useEffect, useRef} from "react";
 
@@ -20,12 +22,7 @@ export const VideoPlayer = ({src}: VideoPlayerProps) => {
             hls.loadSource(src);
             hls.attachMedia(video);
             hls.on(Hls.Events.ERROR, (event, data) => {
-                console.error("HLS Error Details:", {
-                    type: data.type,
-                    details: data.details,
-                    fatal: data.fatal,
-                    error: data.error,
-                });
+                console.error("HLS Error:", event, data); // Log full details
                 if (data.fatal && data.type === Hls.ErrorTypes.NETWORK_ERROR && retryCount.current < MAX_RETRIES) {
                     console.log(`Retrying in ${RETRY_DELAY / 1000} seconds (Attempt ${retryCount.current + 1}/${MAX_RETRIES})`);
                     setTimeout(() => {
