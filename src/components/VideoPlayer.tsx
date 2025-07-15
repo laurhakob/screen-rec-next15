@@ -5,9 +5,10 @@ import {useEffect, useRef} from "react";
 
 interface VideoPlayerProps {
     src: string;
+    poster?: string;
 }
 
-export const VideoPlayer = ({src}: VideoPlayerProps) => {
+export const VideoPlayer = ({src, poster}: VideoPlayerProps) => {
     const videoRef = useRef<HTMLVideoElement>(null);
     const retryCount = useRef(0);
     const MAX_RETRIES = 5;
@@ -22,7 +23,7 @@ export const VideoPlayer = ({src}: VideoPlayerProps) => {
             hls.loadSource(src);
             hls.attachMedia(video);
             hls.on(Hls.Events.ERROR, (event, data) => {
-                console.error("HLS Error:", event, data); // Log full details
+                console.error("HLS Error:", event, data);
                 if (data.fatal && data.type === Hls.ErrorTypes.NETWORK_ERROR && retryCount.current < MAX_RETRIES) {
                     console.log(`Retrying in ${RETRY_DELAY / 1000} seconds (Attempt ${retryCount.current + 1}/${MAX_RETRIES})`);
                     setTimeout(() => {
@@ -37,12 +38,9 @@ export const VideoPlayer = ({src}: VideoPlayerProps) => {
     };
 
     useEffect(() => {
-        retryCount.current = 0; // Reset retries when src changes
+        retryCount.current = 0;
         loadVideo();
     }, [src]);
 
-    return <video ref={videoRef} controls className="w-full mt-2"/>;
+    return <video ref={videoRef} controls className="w-full mt-2" poster={poster}/>;
 };
-
-
-// src/components/VideoPlayer.tsx

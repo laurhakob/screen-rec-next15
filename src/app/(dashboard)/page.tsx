@@ -1,5 +1,6 @@
 // src/app/(dashboard)/page.tsx
 
+
 "use client";
 
 import {Button} from "@/components/ui/button";
@@ -9,7 +10,7 @@ import {DropdownList} from "@/components/DropdownList";
 import UploadButton from "@/components/UploadButton";
 import {useQuery} from "convex/react";
 import {api} from "../../../convex/_generated/api";
-import {VideoPlayer} from "@/components/VideoPlayer";
+import VideoCard from "@/components/VideoCard";
 
 export default function Home() {
     const videos = useQuery(api.videos.getVideos);
@@ -44,21 +45,7 @@ export default function Home() {
                 {videos === undefined ? (
                     <p>Loading videos...</p>
                 ) : videos.length > 0 ? (
-                    videos.map((video) => (
-                        <div key={video._id} className="border rounded-lg p-4">
-                            <h3 className="text-lg font-semibold">{video.title}</h3>
-                            <p className="text-sm text-gray-600">{video.description}</p>
-                            {video.thumbnailUrl && (
-                                <img
-                                    src={video.thumbnailUrl}
-                                    alt={video.title}
-                                    className="w-full h-40 object-cover mt-2 rounded"
-                                    onError={(e) => console.error("Thumbnail load failed:", video.thumbnailUrl, e)}
-                                />
-                            )}
-                            <VideoPlayer src={video.videoUrl}/>
-                        </div>
-                    ))
+                    videos.map((video) => <VideoCard key={video._id} video={video}/>)
                 ) : (
                     <p>No videos found.</p>
                 )}
@@ -66,6 +53,3 @@ export default function Home() {
         </div>
     );
 }
-
-
-// src/app/(dashboard)/page.tsx
