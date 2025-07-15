@@ -1,3 +1,4 @@
+// convex/videos.ts
 // import {v} from "convex/values";
 // import {mutation, query} from "./_generated/server";
 // import {getAuthUserId} from "@convex-dev/auth/server";
@@ -29,9 +30,21 @@
 //         return await ctx.db.query("videos").collect();
 //     },
 // });
+//
+// export const getCurrentUserVideos = query({
+//     args: {},
+//     handler: async (ctx) => {
+//         const userId = await getAuthUserId(ctx);
+//         if (!userId) {
+//             throw new Error("Unauthorized");
+//         }
+//         return await ctx.db.query("videos")
+//             .filter((q) => q.eq(q.field("userId"), userId))
+//             .collect();
+//     },
+// });
 
 
-// convex/videos.ts
 import {v} from "convex/values";
 import {mutation, query} from "./_generated/server";
 import {getAuthUserId} from "@convex-dev/auth/server";
@@ -60,7 +73,11 @@ export const createVideo = mutation({
 export const getVideos = query({
     args: {},
     handler: async (ctx) => {
-        return await ctx.db.query("videos").collect();
+        const userId = await getAuthUserId(ctx);
+        const allVideos = await ctx.db.query("videos").collect();
+        return allVideos.filter(video =>
+            video.visibility === "public" || (userId && video.userId === userId)
+        );
     },
 });
 
