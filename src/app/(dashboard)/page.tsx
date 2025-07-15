@@ -66,3 +66,6 @@ export default function Home() {
         </div>
     );
 }
+
+
+// src/app/(dashboard)/page.tsx

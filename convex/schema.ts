@@ -1,14 +1,3 @@
-// import {defineSchema} from "convex/server";
-// import {authTables} from "@convex-dev/auth/server";
-//
-// const schema = defineSchema({
-//     ...authTables,
-//     // Your other tables...
-// });
-//
-// export default schema;
-
-
 import {defineSchema, defineTable} from "convex/server";
 import {v} from "convex/values";
 import {authTables} from "@convex-dev/auth/server";
@@ -27,3 +16,6 @@ const schema = defineSchema({
 });
 
 export default schema;
+
+
+// convex/schema.ts

@@ -43,3 +43,6 @@ export const VideoPlayer = ({src}: VideoPlayerProps) => {
 
     return <video ref={videoRef} controls className="w-full mt-2"/>;
 };
+
+
+// src/components/VideoPlayer.tsx
