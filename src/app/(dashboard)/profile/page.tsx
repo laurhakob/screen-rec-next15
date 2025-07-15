@@ -72,11 +72,12 @@ import {useCurrentUser} from "@/features/auth/api/use-current-user";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
-import {Loader, Search, Upload, Video} from "lucide-react";
+import {Loader, Search, Video} from "lucide-react";
 import {DropdownList} from "@/components/DropdownList";
 import {useQuery} from "convex/react";
 import {api} from "../../../../convex/_generated/api";
 import {VideoPlayer} from "@/components/VideoPlayer";
+import UploadButton from "@/components/UploadButton";
 
 export default function ProfilePage() {
     const {data: user, isLoading} = useCurrentUser();
@@ -108,13 +109,7 @@ export default function ProfilePage() {
                 </div>
             </div>
             <div className="flex gap-2 mb-4">
-                <Button
-                    size="lg"
-                    className="bg-white text-black hover:bg-gray-200/50 hover:text-black/50 rounded-full"
-                >
-                    <Upload className="size-5 mr-2"/>
-                    Upload a video
-                </Button>
+                <UploadButton/>
                 <Button
                     size="lg"
                     className="bg-red-500 text-white hover:bg-red-500/75 hover:text-white rounded-full"
