@@ -10,10 +10,12 @@
 // import {api} from "../../../../convex/_generated/api";
 // import VideoCard from "@/components/VideoCard";
 // import UploadButton from "@/components/UploadButton";
+// import {useVideoSearch} from "@/hooks/useVideoSearch";
 //
 // export default function ProfilePage() {
 //     const {data: user, isLoading} = useCurrentUser();
 //     const videos = useQuery(api.videos.getCurrentUserVideos);
+//     const {searchQuery, setSearchQuery, filteredVideos} = useVideoSearch(videos);
 //
 //     if (isLoading) {
 //         return <Loader className="size-4 animate-spin text-muted-foreground"/>;
@@ -55,6 +57,8 @@
 //                     <Input
 //                         className="rounded-full border border-gray-300 pl-10 w-full"
 //                         placeholder="Search for videos, tags, folders..."
+//                         value={searchQuery}
+//                         onChange={(e) => setSearchQuery(e.target.value)}
 //                     />
 //                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-5"/>
 //                 </div>
@@ -64,10 +68,12 @@
 //                 <h2 className="text-xl font-bold mb-4">My Videos</h2>
 //                 {videos === undefined ? (
 //                     <p>Loading videos...</p>
-//                 ) : videos.length > 0 ? (
+//                 ) : filteredVideos.length > 0 ? (
 //                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-//                         {videos.map((video) => <VideoCard key={video._id} video={video}/>)}
+//                         {filteredVideos.map((video) => <VideoCard key={video._id} video={video}/>)}
 //                     </div>
+//                 ) : searchQuery ? (
+//                     <p>No videos match your search.</p>
 //                 ) : (
 //                     <p>No videos uploaded yet.</p>
 //                 )}
@@ -81,15 +87,15 @@
 
 import {useCurrentUser} from "@/features/auth/api/use-current-user";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
-import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
-import {Loader, Search, Video} from "lucide-react";
+import {Loader, Search} from "lucide-react";
 import {DropdownList} from "@/components/DropdownList";
 import {useQuery} from "convex/react";
 import {api} from "../../../../convex/_generated/api";
 import VideoCard from "@/components/VideoCard";
 import UploadButton from "@/components/UploadButton";
 import {useVideoSearch} from "@/hooks/useVideoSearch";
+import ScreenRecordingDialog from "@/components/ScreenRecordingDialog";
 
 export default function ProfilePage() {
     const {data: user, isLoading} = useCurrentUser();
@@ -123,13 +129,7 @@ export default function ProfilePage() {
             </div>
             <div className="flex gap-2 mb-4">
                 <UploadButton/>
-                <Button
-                    size="lg"
-                    className="bg-red-500 text-white hover:bg-red-500/75 hover:text-white rounded-full"
-                >
-                    <Video className="size-5 mr-2"/>
-                    Record a video
-                </Button>
+                <ScreenRecordingDialog/>
             </div>
             <div className="flex justify-between items-center mt-4">
                 <div className="relative w-1/2">
@@ -149,7 +149,9 @@ export default function ProfilePage() {
                     <p>Loading videos...</p>
                 ) : filteredVideos.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {filteredVideos.map((video) => <VideoCard key={video._id} video={video}/>)}
+                        {filteredVideos.map((video) => (
+                            <VideoCard key={video._id} video={video}/>
+                        ))}
                     </div>
                 ) : searchQuery ? (
                     <p>No videos match your search.</p>
