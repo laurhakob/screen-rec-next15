@@ -1,4 +1,3 @@
-// convex/videos.ts
 // import {v} from "convex/values";
 // import {mutation, query} from "./_generated/server";
 // import {getAuthUserId} from "@convex-dev/auth/server";
@@ -27,7 +26,11 @@
 // export const getVideos = query({
 //     args: {},
 //     handler: async (ctx) => {
-//         return await ctx.db.query("videos").collect();
+//         const userId = await getAuthUserId(ctx);
+//         const allVideos = await ctx.db.query("videos").collect();
+//         return allVideos.filter(video =>
+//             video.visibility === "public" || (userId && video.userId === userId)
+//         );
 //     },
 // });
 //
@@ -44,6 +47,8 @@
 //     },
 // });
 
+
+// for creating detail page
 
 import {v} from "convex/values";
 import {mutation, query} from "./_generated/server";
@@ -91,5 +96,20 @@ export const getCurrentUserVideos = query({
         return await ctx.db.query("videos")
             .filter((q) => q.eq(q.field("userId"), userId))
             .collect();
+    },
+});
+
+export const getVideoById = query({
+    args: {videoId: v.id("videos")},
+    handler: async (ctx, args) => {
+        const video = await ctx.db.get(args.videoId);
+        if (!video) {
+            return null;
+        }
+        const userId = await getAuthUserId(ctx);
+        if (video.visibility === "private" && (!userId || video.userId !== userId)) {
+            return null;
+        }
+        return video;
     },
 });
